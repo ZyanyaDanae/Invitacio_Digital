@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>¡Tienes una Invitación!</title>
+  <meta name="google-adsense-account" content="ca-pub-4704501585981299">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<audio id="musicaFondo" src="Audio_Fondo.mp3" preload="auto" loop muted></audio>
+
+<div id="countdown-banner">
+    <div id="countdown-timer">
+        <div class="time-block"><span id="dias">00</span><span>Días</span></div>
+        <div class="time-block"><span id="horas">00</span><span>Horas</span></div>
+        <div class="time-block"><span id="minutos">00</span><span>Min</span></div>
+        <div class="time-block"><span id="segundos">00</span><span>Seg</span></div>
+    </div>
+</div>
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&display=swap');
+
+*,
+::before,
+::after {
+    box-sizing: border-box;
+}
+body  {
+    font-family: "Dancing Script", cursive;
+    background: linear-gradient(to bottom right, #eaf9f6, #f3fdfb, #e6f6f2);
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    /* CAMBIO: Agregamos padding arriba para empujar todo hacia abajo */
+    padding-top: 80px; 
+    overflow: hidden;
+    -webkit-tap-highlight-color: transparent;
+    font-size: 1.1rem; 
+}
+
+/* === ESTILOS CUENTA REGRESIVA === */
+#countdown-banner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    padding: 10px 0;
+    z-index: 1002;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+#countdown-timer {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    text-align: center;
+    font-family: "Dancing Script", cursive;
+}
+.time-block { display: flex; flex-direction: column; }
+.time-block span:first-child { font-size: 1.8em; font-weight: 700; color: #8bb7a6; line-height: 1; }
+.time-block span:last-child { font-size: 0.9em; text-transform: uppercase; color: #555; font-weight: 600; }
+
+@media (min-width: 720px) {
+    .time-block span:first-child { font-size: 2.2em; }
+    .time-block span:last-child { font-size: 1em; }
+}
+
+/* === ESTILOS DEL SOBRE === */
+.envelope {
+    --duration: 1000ms;
+    --shadow-width: calc(var(--envelope-width) * 0.85);
+    --shadow-blur: 15px;
+    --envelope-width: 300px;
+    --envelope-height: 175px;
+    --envelope-clr-bg: #8bb7a6;
+    --envelope-clr-bg-side: #7ba392; 
+    --envelope-clr-bg-bottom: #9ac9b8; 
+    --envelope-clr-bg-top: #8bb7a6; 
+    --envelope-clr-txt: #fff;
+    --envelope-transform-hover: rotateY(180deg);
+    --evelope-rotate-delay: calc(var(--duration) / 1);
+    --evelope-rotate-delay-hover: 0ms;
+    --letter-clr-bg: #fff;
+    --letter-clr-text: #555;
+    --letter-font-size: 1rem;
+    --letter-delay: 0ms;
+    --letter-delay-hover: calc(var(--duration) * 0.8); 
+    --letter-height: calc(var(--envelope-height) - 2rem);
+    
+    /* CAMBIO: Reduje la altura máxima para que no choque arriba */
+    --letter-height-hover: 320px; 
+    
+    --fold-rotate: rotateX(0deg);
+    --fold-zindex-hover: 0;
+    --fold-rotate-hover: rotateX(180deg);
+    --fold-delay: calc(var(--duration) / 2);
+    --fold-delay-hover: calc(var(--duration) * .75);
+    --front-font-size: 1rem;
+
+    position: relative;
+    height: var(--envelope-height);
+    width: var(--envelope-width);
+    perspective: 1000px;
+    cursor: pointer;
+    z-index: 100;
+    
+    /* CAMBIO: Margen extra para bajar el sobre visualmente */
+    margin-top: 50px; 
+}
+
+@media (min-width: 720px) {
+    .envelope {
+        --envelope-width: 500px;
+        --envelope-height: 250px;
+        --letter-font-size: 1.6rem;
+        --front-font-size: 1.25rem;
+        --letter-height-hover: 400px; /* Un poco más alto en PC */
+    }
+}
+
+.envelope::after {
+    content: "";
+    position: absolute;
+    top: 110%;
+    left: 50%;
+    width: var(--shadow-width);
+    height: 40px;
+    transition: var(--duration) ease-in-out;
+    transition-delay: var(--evelope-rotate-delay);
+    transform: var(--shadow-transform);
+    translate: -50% 0;
+    border-radius: 50%;
+    background: rgba(56, 6, 6, 0.4);
+    filter: blur(var(--shadow-blur));
+}
+
+.envelope.abierto {
+    --envelope-transform: var(--envelope-transform-hover, 0deg);
+    --evelope-rotate-delay: var(--evelope-rotate-delay-hover);
+    --shadow-transform: rotateY(180deg);
+    --fold-rotate: var(--fold-rotate-hover);
+    --fold-delay: var(--fold-delay-hover);
+    --fold-zindex: var(--fold-zindex-hover);
+    --letter-height: var(--letter-height-hover);
+    --letter-delay: var(--letter-delay-hover);
+    cursor: default;
+}
+
+.envelope-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: var(--duration) ease-in-out;
+    transition-delay: var(--evelope-rotate-delay);
+    transform-style: preserve-3d;
+    transform: var(--envelope-transform);
+    display: grid;
+}
+
+.envelope-front, .envelope-back {
+    position: relative;
+    grid-area: 1/1;
+    width: 100%;
+    height: 100%;
+    background-color: var(--envelope-clr-bg);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    perspective: 1000px;
+    isolation: isolate;
+}
+
+.envelope-front {
+    color: var(--envelope-clr-txt);
+    display: grid;
+    place-content: center;
+}
+.envelope-front .address {
+    text-align: center;
+    font-size: var(--front-font-size);
+}
+.envelope-front .address > p > span:first-child { font-weight: 200; }
+.envelope-front .address > p > span:last-of-type { font-weight: 800; }
+
+.envelope-back { transform: rotateY(180deg); }
+.envelope-back::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    background-image: conic-gradient(
+        transparent 60deg,
+        var(--envelope-clr-bg-side) 60deg 120deg,
+        var(--envelope-clr-bg-bottom) 120deg 240deg,
+        var(--envelope-clr-bg-side) 240deg 300deg,
+        transparent 300deg
+    );
+}
+.envelope-back .top-fold {
+    position: absolute;
+    inset: 0;
+    z-index: var(--fold-zindex, 10);
+    background-color: var(--envelope-clr-bg-top);
+    clip-path: polygon(0% 0%, 50% 55%, 100% 0%);
+    transform: var(--fold-rotate);
+    transform-origin: top;
+    transition: var(--duration) ease-in-out;
+    transition-delay: var(--fold-delay);
+}
+
+.letter {
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    width: 90%;
+    height: var(--letter-height);
+    font-size: var(--letter-font-size);
+    transform: translateX(-50%) translateY(0);
+    z-index: 2;
+    transition: height var(--duration) ease-in-out var(--letter-delay),
+                transform var(--duration) ease-in-out var(--letter-delay),
+                z-index 0ms linear var(--letter-delay);
+    background: var(--letter-clr-bg);
+    padding: 1rem; 
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: center;
+    text-align: center;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0,0,0,0.2);
+    border-radius: 4px;
+    justify-content: flex-start; /* Alinea contenido arriba */
+}
+
+.envelope.abierto .letter {
+    /* CAMBIO: Ajuste fino para que la carta salga lo suficiente pero no toque el techo */
+    transform: translateX(-50%) translateY(-80px); 
+    z-index: 20; 
+    
+    /* CAMBIO: Esto permite scroll dentro de la cartita si el texto es muy largo */
+    overflow-y: auto; 
+    max-height: 350px; /* Límite de altura visual */
+}
+
+/* Scrollbar invisible para estética */
+.letter::-webkit-scrollbar { width: 0; height: 0; }
+.letter { -ms-overflow-style: none; scrollbar-width: none; }
+
+.letter p {
+    margin: 0.2em 0;
+    font-weight: 600;
+    color: #555;
+    font-size: clamp(0.95rem, 4vw, 1.2rem);
+    line-height: 1.3;
+}
+.letter .firma {
+    margin-top: 10px;
+    font-size: 1.3em;
+    color: #8bb7a6;
+    margin-bottom: 5px;
+}
+
+.detail-button {
+    display: inline-block;
+    padding: 10px 25px;
+    background-color: var(--envelope-clr-bg); 
+    color: white !important;
+    text-decoration: none;
+    border-radius: 50px;
+    margin-top: 5px;
+    margin-bottom: 10px; /* Espacio extra abajo */
+    font-size: clamp(1rem, 3vw, 1.1rem);
+    font-weight: bold;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+.detail-button:hover {
+    background-color: var(--envelope-clr-bg-side);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 10px rgba(0,0,0,0.2);
+}
+
+</style>
+
+<div class="envelope" id="miSobre">
+    <div class="envelope-inner">
+        <div class="envelope-front">
+            <div class="address">
+                <p style="font-size: 1.8rem; font-weight: 700;">¡Tienes una invitación!</p>
+                <p><span>(Toca para abrir)</span></p>
+            </div>
+        </div>
+        <div class="envelope-back">
+            <div class="top-fold"></div>
+             
+            <div class="letter" id="miCarta">
+                <p>A ti, que has formado parte de mi historia.</p>
+                
+                <p>Te invito a que me regales unas horas de tu vida y las compartamos juntos en mis 15 años.</p>
+                
+                <p>Gracias Dios, gracias vida, gracias a todos...</p>
+                
+                <p class="firma">Te espero, con cariño<br><strong>Zyanya Danae</strong></p>
+                
+                <a href="mas_detalles.html" class="detail-button" id="verDetallesBtn">
+                    Ver Detalles
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+ 
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4704501585981299"
+    crossorigin="anonymous"></script>
+
+<script>
+    const musica = document.getElementById('musicaFondo');
+    const sobre = document.getElementById('miSobre');
+
+    // --- LÓGICA DE LA CUENTA REGRESIVA ---
+    const fechaEvento = new Date("2026-01-17T14:00:00").getTime();
+
+    function actualizarCuentaRegresiva() {
+        const ahora = new Date().getTime();
+        const diferencia = fechaEvento - ahora;
+
+        if (diferencia < 0) {
+            document.getElementById("countdown-timer").innerHTML = "<div style='font-size: 1.2em; font-weight: 700; color: #8bb7a6;'>¡El gran día llegó!</div>";
+            clearInterval(intervaloCuenta);
+            return;
+        }
+
+        const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+        const horas = Math.floor((diferencia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutos = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
+        const segundos = Math.floor((diferencia % (1000 * 60)) / 1000);
+
+        document.getElementById("dias").innerText = dias < 10 ? '0' + dias : dias;
+        document.getElementById("horas").innerText = horas < 10 ? '0' + horas : horas;
+        document.getElementById("minutos").innerText = minutos < 10 ? '0' + minutos : minutos;
+        document.getElementById("segundos").innerText = segundos < 10 ? '0' + segundos : segundos;
+    }
+    
+    const intervaloCuenta = setInterval(actualizarCuentaRegresiva, 1000);
+    actualizarCuentaRegresiva();
+
+    // --- LÓGICA DEL SOBRE Y MÚSICA ---
+    function abrirInvitacion() {
+        if (musica) {
+            musica.muted = false;
+            musica.play().catch(e => console.error("Música no pudo iniciar:", e));
+            localStorage.setItem('musicaReproduciendo', 'true'); 
+        }
+        
+        sobre.classList.add('abierto');
+        sobre.removeEventListener('click', abrirInvitacion);
+    }
+    sobre.addEventListener('click', abrirInvitacion);
+
+    window.addEventListener('pagehide', () => {
+        if (musica && !musica.paused) {
+            localStorage.setItem('musicaReproduciendo', 'true');
+            localStorage.setItem('musicaTiempo', musica.currentTime);
+        }
+    });
+
+    // --- Scripts de bloqueo ---
+    document.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I') || (e.ctrlKey && e.key === 'u')) {
+            e.preventDefault();
+        }
+    });
+</script>
+
+</body>
+</html>
