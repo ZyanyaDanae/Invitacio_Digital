@@ -11,13 +11,12 @@
         body {
             font-family: "Dancing Script", cursive;
             
-            /* FONDO GENERAL DE LA PÁGINA */
-            background-image: url('Fondo2.jpg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            
+            /* === FONDO GENERAL DE LA PÁGINA: Degradado suave verde/menta === */
+            background: linear-gradient(to bottom right, #eaf9f6, #f3fdfb, #e6f6f2);
+            background-image: none; 
+            background-attachment: scroll;
+            /* ======================================================= */
+
             color: #333;
             display: flex;
             justify-content: flex-start;
@@ -63,14 +62,14 @@
             .time-block span:last-child { font-size: 1em; }
         }
         
-        /* === CAMBIO AQUÍ: FONDO DEL CONTENEDOR CENTRAL === */
+        /* === CONTENEDOR CENTRAL: FONDO REPETIDO (Fondo1.jpg) === */
         .content-wrapper {
-            /* Se eliminó background-color: #CEEBE8; */
-            
-            /* Se agregó la imagen de fondo */
+            /* Aplicamos Fondo1.jpg como patrón repetido */
             background-image: url('Fondo1.jpg');
-            background-size: cover; /* Ajusta la imagen al tamaño del cuadro */
+            background-repeat: repeat;
+            background-size: auto;
             background-position: center;
+            background-color: transparent; /* Permite que la imagen se vea */
             
             padding: 2em; 
             border-radius: 15px;
@@ -84,6 +83,25 @@
             position: relative;
             z-index: 100;
             overflow: hidden; 
+        }
+        
+        /* Capa Semi-Transparente Blanca para mejorar la legibilidad del texto */
+        .content-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.7); /* 70% de blanco transparente */
+            z-index: 99; 
+            pointer-events: none;
+        }
+        
+        /* Aseguramos que todo el contenido de texto y botones esté encima del fondo */
+        .content-wrapper > * {
+            position: relative;
+            z-index: 101; 
         }
         /* ================================================= */
 
@@ -145,7 +163,7 @@
             transform: translateY(-2px);
         }
 
-        /* --- ESTILOS PARA LAS IMÁGENES (Difuminado Menta) --- */
+        /* --- ESTILOS PARA LAS IMÁGENES (Difuminado) --- */
         .photo-gallery {
             width: 100%;
             display: flex;
@@ -172,7 +190,8 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: radial-gradient(ellipse at center, transparent 60%, #CEEBE8 100%);
+            /* El difuminado se mantiene, pero ahora se funde en la capa transparente */
+            background: radial-gradient(ellipse at center, transparent 60%, rgba(255, 255, 255, 0.9) 100%);
             pointer-events: none;
         }
         .photo-wrapper img {
@@ -402,4 +421,3 @@
 
 </body>
 </html>
-
