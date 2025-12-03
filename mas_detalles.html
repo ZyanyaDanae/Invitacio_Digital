@@ -11,11 +11,13 @@
         body {
             font-family: "Dancing Script", cursive;
             background: linear-gradient(to bottom right, #eaf9f6, #f3fdfb, #e6f6f2);
+            background-image: none; 
+            background-attachment: scroll;
+
             color: #333;
             display: flex;
             justify-content: flex-start;
-            /* Padding para escritorio */
-            padding-top: 9em; 
+            padding-top: 9em; /* Ajustado */
             padding-bottom: 5em;
             overflow-y: auto;
             align-items: center;
@@ -29,167 +31,104 @@
             font-size: 1.2rem;
         }
 
-        /* === CONTADOR === */
+        /* === ESTILOS CUENTA REGRESIVA === */
         #countdown-banner {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background-color: rgba(255, 255, 255, 0.95); /* Un poco más sólido */
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            padding: 8px 0;
-            z-index: 1002;
-            backdrop-filter: blur(5px);
+            position: fixed; top: 0; left: 0; width: 100%;
+            background-color: rgba(255, 255, 255, 0.9); box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 8px 0; z-index: 1002; backdrop-filter: blur(5px);
         }
-        #countdown-timer {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            text-align: center;
-            font-family: "Dancing Script", cursive;
-        }
+        #countdown-timer { display: flex; justify-content: center; gap: 15px; text-align: center; font-family: "Dancing Script", cursive; }
         .time-block { display: flex; flex-direction: column; }
         .time-block span:first-child { font-size: 1.5em; font-weight: 700; color: #8bb7a6; line-height: 1; }
         .time-block span:last-child { font-size: 0.8em; text-transform: uppercase; color: #555; letter-spacing: 0.5px; font-weight: 600; }
-        
-        /* Ajuste contador en PC */
         @media (min-width: 720px) {
             .time-block span:first-child { font-size: 2.2em; }
             .time-block span:last-child { font-size: 1em; }
             #countdown-banner { padding: 15px 0; }
         }
         
-        /* === CONTENEDOR PRINCIPAL === */
+        /* === CONTENEDOR CENTRAL: FONDO REPETIDO (Fondo1.jpg) === */
         .content-wrapper {
-            background-image: url('Fondo1.jpg');
-            background-repeat: repeat;
-            background-size: 300px; 
-            background-position: center;
-            background-color: transparent;
-            
-            padding: 2.5em; 
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-            max-width: 600px;
-            width: 100%; /* Ocupa todo el ancho disponible */
-            display: flex;
-            flex-direction: column;
-            gap: 1.5em;
-            align-items: center;
-            position: relative;
-            z-index: 100;
-            overflow: hidden; 
-            box-sizing: border-box; /* Asegura que el padding no rompa el ancho */
+            background-image: url('Fondo1.jpg'); background-repeat: repeat; background-size: 300px; 
+            background-position: center; background-color: transparent; padding: 2.5em;
+            border-radius: 15px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15); max-width: 600px; 
+            width: 100%; display: flex; flex-direction: column; gap: 1.5em; align-items: center;
+            position: relative; z-index: 100; overflow: hidden; box-sizing: border-box; 
         }
         
-        /* Capa blanca */
         .content-wrapper::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-color: rgba(255, 255, 255, 0.75); /* Un poco más de opacidad para leer mejor */
-            z-index: 99; 
-            pointer-events: none;
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(255, 255, 255, 0.75); z-index: 99; pointer-events: none;
         }
         
-        .content-wrapper > * {
-            position: relative;
-            z-index: 101; 
-        }
+        .content-wrapper > * { position: relative; z-index: 101; }
 
-        .section-divider {
-            width: 80%; height: 2px; background-color: #8bb7a6;
-            border-radius: 2px; opacity: 0.5; margin: 10px 0;
-        }
-        
+        .section-divider { width: 80%; height: 2px; background-color: #8bb7a6; border-radius: 2px; opacity: 0.5; margin: 10px 0; }
         h1 { font-size: 2.8rem; color: #8bb7a6; margin: 0; font-weight: 700; line-height: 1.1; }
         h2 { font-size: 2rem; color: #555; margin: 0; font-weight: 600; }
         p { font-size: 1.3rem; line-height: 1.4; color: #555; margin: 0; }
         .parents-section strong { font-size: 1.3em; color: #333; font-weight: 700; }
         
-        /* Botones */
         .location-button, .action-button {
             display: inline-block; padding: 12px 25px; text-decoration: none; border-radius: 50px;
             font-size: 1.2rem; font-weight: 700; box-shadow: 0 4px 8px rgba(0,0,0,0.15);
             transition: all 0.3s ease; margin-top: 10px; width: 90%; max-width: 280px;
         }
         .location-button { background-color: #8bb7a6; color: white !important; }
-        .location-button:hover { background-color: #7ba392; transform: translateY(-2px); }
 
-        /* === GALERÍA DE FOTOS === */
+        /* === GALERÍA DE FOTOS (AJUSTE FINAL DE TAMAÑO Y FIT) === */
         .photo-gallery { width: 100%; display: flex; flex-direction: column; gap: 1em; margin: 1em 0; }
         .photo-row { display: flex; gap: 10px; justify-content: center; }
         
         .photo-wrapper {
-            position: relative;
-            overflow: hidden;
-            border-radius: 10px;
-            flex: 1; /* Se reparten el espacio 50/50 */
-            /* Altura base para PC */
-            height: 250px; 
+            position: relative; overflow: hidden; border-radius: 10px; flex: 1; 
+            /* Aumentamos la altura para que el corte sea menor */
+            height: 300px; 
         }
         .photo-wrapper::after, .dresscode-image-wrapper::after {
             content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
             background: radial-gradient(ellipse at center, transparent 60%, rgba(255, 255, 255, 0.9) 100%);
             pointer-events: none;
         }
+        
+        /* FOTOS BEBÉ/NIÑA: Usamos COVER para que no se vean pequeñas */
         .photo-wrapper img {
-            width: 100%; height: 100%; object-fit: contain; display: block;
+            width: 100%; height: 100%; 
+            object-fit: cover; 
+            display: block;
+            /* Intentamos centrar más la cara del bebé */
+            object-position: center 30%; 
         }
         
+        /* FOTO PODIO (Ancho completo) */
         .photo-wrapper.full-width {
-            width: calc(100% + 5em); /* Forzamos ancho completo */
-            margin-left: -2.5em; margin-right: -2.5em;
-            border-radius: 0; height: 250px; 
-        }
-        .photo-wrapper.full-width img { object-fit: cover; } /* La foto grande sí se recorta para llenar */
-
-        /* Vestimenta y Regalos */
-        .full-width-section {
-            display: flex; flex-direction: column; align-items: center;
             width: calc(100% + 5em); margin-left: -2.5em; margin-right: -2.5em;
-            margin-top: 1em; margin-bottom: 1em;
+            border-radius: 0; height: 300px; 
         }
+        .photo-wrapper.full-width img { 
+            object-fit: cover; 
+        } 
+
+        /* Estilos generales */
+        .full-width-section { display: flex; flex-direction: column; align-items: center; width: calc(100% + 5em); margin-left: -2.5em; margin-right: -2.5em; margin-top: 1em; margin-bottom: 1em; }
         .dresscode-image-wrapper { position: relative; width: 100%; margin: 0; overflow: hidden; }
         .full-width-section img { width: 100%; height: auto; object-fit: cover; display: block; }
-
         .action-buttons { display: flex; flex-direction: column; gap: 1em; margin-top: 1em; width: 100%; max-width: 300px; }
         .whatsapp-button { background-color: #25d366; color: white !important; }
         .back-button { background-color: #ccc; color: #333 !important; }
 
-        /* ========================================= */
-        /* === VISTA MÓVIL (PANTALLAS PEQUEÑAS) === */
-        /* ========================================= */
+        /* === VISTA MÓVIL === */
         @media (max-width: 600px) {
-            body {
-                /* Reducimos el espacio arriba para que no quede tanto hueco en celular */
-                padding-top: 130px; 
-            }
-            .content-wrapper {
-                /* Menos relleno interno en celular para ganar espacio */
-                padding: 1.5em; 
-                width: 95%; /* Un poco más de margen a los lados */
-            }
+            body { padding-top: 130px; }
+            .content-wrapper { padding: 1.5em; width: 95%; }
+            h1 { font-size: 2.2rem; } h2 { font-size: 1.8rem; } p { font-size: 1.1rem; }
             
-            /* Ajuste de fuentes para celular */
-            h1 { font-size: 2.2rem; }
-            h2 { font-size: 1.8rem; }
-            p { font-size: 1.1rem; }
+            /* Ajustamos la altura de fotos para móvil, pero manteniendo COVER */
+            .photo-wrapper { height: 200px; } 
+            .photo-wrapper.full-width { height: 250px; } 
 
-            /* Ajuste de altura de fotos en celular */
-            .photo-wrapper {
-                /* En celular, 250px es muy alto para fotos 'contain', reducimos a 160px */
-                height: 160px; 
-            }
-            .photo-wrapper.full-width {
-                height: 200px; /* La foto grande un poco menos alta también */
-            }
-            
-            /* Ajustar los elementos de ancho completo para el nuevo padding */
             .photo-wrapper.full-width, .full-width-section {
-                width: calc(100% + 3em); /* Ajuste basado en el padding de 1.5em */
-                margin-left: -1.5em; 
-                margin-right: -1.5em;
+                width: calc(100% + 3em); margin-left: -1.5em; margin-right: -1.5em;
             }
         }
     </style>
